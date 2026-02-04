@@ -115,81 +115,47 @@ struct Movies {
 
     static func findMovie(byTitle title: String, in movies: [Movie]) -> Movie?
     {
-        for movie in movies {
-            if movie.title.lowercased() == title.lowercased() {
-                return movie
-            }
-        }
-        return nil
+        return movies.first { $0.title.lowercased() == title.lowercased() }
     }
 
     static func filterMovies(_ movies: [Movie], matching criteria: (Movie) -> Bool) -> [Movie]
     {
-        var filteredMovies: [Movie] = []
-        for movie in movies {
-            if criteria(movie) {
-                filteredMovies.append(movie)
-            }
-        }
-        return filteredMovies
+        return movies.filter(criteria)
     }
 
     static func getUniqueGenres(from movies: [Movie]) -> Set<String>
     {
-        var genres: Set<String> = Set()
-        for movie in movies {
-            genres.insert(movie.genre)
-        }
-        return genres
+        return Set(movies.map { $0.genre })
     }
 
     static func averageRating(of movies: [Movie]) -> Double
     {
-        guard !movies.isEmpty else {
-            return 0.0
-        }
-        var totalRating: Double = 0.0
-        for movie in movies {
-            totalRating += movie.rating
-        }
+        guard !movies.isEmpty else { return 0.0 }
+        let totalRating = movies.reduce(0.0) { $0 + $1.rating }
         return totalRating / Double(movies.count)
     }
 
     static func bestMovie(in movies: [Movie]) -> Movie?
     {
-        guard !movies.isEmpty else {
-            return nil
-        }
-        var best: Movie = movies[0]
-        for movie in movies {
-            if movie.rating > best.rating {
-                best = movie
-            }
-        }
-        return best
+        return movies.max { $0.rating < $1.rating }
     }
 
     static func moviesByDecade(_ movies: [Movie]) -> [String: [Movie]]
     {
-        var decadeDict: [String: [Movie]] = [:]
-        for movie in movies {
-            let decade = "\(movie.year / 10 * 10)s"
-            if decadeDict[decade] == nil {
-                decadeDict[decade] = []
-            }
-            decadeDict[decade]?.append(movie)
-        }
-        return decadeDict
+        return Dictionary(grouping: movies) { "\(($0.year / 10) * 10)s" }
     }
 
     static func displayMenu() {
         print("=== 🎬 Movie Manager ===")
-        print("1. Afficher tous les films")
-        print("2. Rechercher un film")
-        print("3. Filtrer par genre")
-        print("4. Afficher les statistiques")
-        print("5. Ajouter un film")
-        print("6. Quitter")
+        let options = [
+            "Afficher tous les films",
+            "Rechercher un film",
+            "Filtrer par genre",
+            "Afficher les statistiques",
+            "Ajouter un film",
+            "Quitter"
+        ]
+        options.enumerated().forEach { print("\($0.offset + 1). \($0.element)") }
     }
 
 }
