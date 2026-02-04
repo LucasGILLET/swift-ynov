@@ -75,11 +75,38 @@ struct Movies {
                     }
                     break
                 case 6:
+                    let filename = "movies_export.csv"
+                    saveCSV(list, to: filename)
+                    break
+                case 7:
                     shouldQuit = true
                     break
                 default:
                     print("Invalid choice")
             }
+        }
+    }
+
+    static func exportToCSV(_ movies: [(title: String, year: Int, rating: Double, genre: String)]) -> String
+    {
+        var csvString = "Title,Year,Rating,Genre\n"
+        for movie in movies {
+            let title = movie.title.contains(",") ? "\"\(movie.title)\"" : movie.title
+            csvString += "\(title),\(movie.year),\(movie.rating),\(movie.genre)\n"
+        }    
+        return csvString
+    }
+
+    static func saveCSV(_ movies: [(title: String, year: Int, rating: Double, genre: String)], to filename: String)
+    {
+        let csvString = exportToCSV(movies)
+        let fileURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent(filename)
+
+        do {
+            try csvString.write(to: fileURL, atomically: true, encoding: .utf8)
+            print("CSV saved to \(fileURL.path)")
+        } catch {
+            print("Error saving CSV: \(error)")
         }
     }
 
@@ -136,6 +163,7 @@ struct Movies {
             "Filtrer par genre",
             "Afficher les statistiques",
             "Ajouter un film",
+            "Exporter la liste en CSV",
             "Quitter"
         ]
         options.enumerated().forEach { print("\($0.offset + 1). \($0.element)") }
