@@ -27,16 +27,12 @@ struct Movies {
 
             switch choice {
                 case 1:
-                    print("Afficher tous les films selected")
-                    // Option 1 : Affiche tous les films avec displayMovie
                     for movie in list {
                         displayMovie(movie)
                     }
                     break
 
                 case 2:
-                    print("Rechercher un film selected")
-                    // Option 2 : Demande un titre et recherche le film
                     let title =  readLine()
                     if let title = title, let movie = findMovie(byTitle: title, in: list) {
                         displayMovie(movie)
@@ -46,14 +42,10 @@ struct Movies {
 
                     break
                 case 3:
-                    print("Filtrer par genre selected")
-                    // Option 3 : Affiche les genres disponibles et filtre
                     let genres = getUniqueGenres(from: list)
                     print("Available genres: \(genres)")
                     break
                 case 4:
-                    print("Afficher les statistiques selected")
-                    // Option 4 : Affiche nombre total, note moyenne, meilleur film
                     let movies = list
                     print("Total movies: \(movies.count)")
                     print("Average rating: \(averageRating(of: movies))")
@@ -63,9 +55,6 @@ struct Movies {
                     }
                     break
                 case 5:
-                    print("Ajouter un film selected")
-                    // Option 5 : Demande les informations et ajoute un film
-                    
                     print("Enter title:")
                     let newTitle = readLine()
                     print("Enter year:")
@@ -86,8 +75,6 @@ struct Movies {
                     }
                     break
                 case 6:
-                    print("Quitter selected")
-                    // Option 6 : Quitte l'application
                     shouldQuit = true
                     break
                 default:
