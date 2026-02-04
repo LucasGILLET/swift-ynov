@@ -2,6 +2,8 @@ import Foundation
 
 struct Movies {
 
+    typealias Movie = (title: String, year: Int, rating: Double, genre: String)
+    
     static func runApp() {
         var shouldQuit = false
 
@@ -15,7 +17,7 @@ struct Movies {
                     print("Afficher tous les films selected")
                     // Option 1 : Affiche tous les films avec displayMovie
                     for movie in Movies.listMovies() {
-                        displayMovie((movie.title, movie.year, movie.rating, movie.genre))
+                        displayMovie(movie)
                     }
                     break
 
@@ -80,8 +82,8 @@ struct Movies {
     }
 
 
-    static func listMovies() -> [(title: String, year: Int, rating: Double, genre: String)]{
-        let movies: [(title: String, year: Int, rating: Double, genre: String)] = [
+    static func listMovies() -> [Movie]{
+        let movies: [Movie] = [
             (title: "Inception", year: 2010, rating: 8.8, genre: "Sci-Fi"),
             (title: "Interstellar", year: 2014, rating: 8.6, genre: "Sci-Fi"),
             (title: "The Dark Knight", year: 2008, rating: 9.0, genre: "Action"),
@@ -97,21 +99,21 @@ struct Movies {
         return movies;
     }
 
-    static func displayMovie(_ movie: (title: String, year: Int, rating: Double, genre: String))
+    static func displayMovie(_ movie: Movie)
     {
         print("📽️  \(movie.title) (\(movie.year)) - \(movie.genre)")
         print("⭐ Rating: \(movie.rating)/10")
     }
 
 
-    static func addMovie(title: String, year: Int, rating: Double, genre: String, to movies: inout [(title: String, year: Int, rating: Double, genre: String)])
+    static func addMovie(title: String, year: Int, rating: Double, genre: String, to movies: inout [Movie])
     {
-        let newMovie: (title: String, year: Int, rating: Double, genre: String) = (title: title, year: year, rating: rating, genre: genre)
+        let newMovie: Movie = (title: title, year: year, rating: rating, genre: genre)
         movies.append(newMovie)
         print("Movie '\(title)' added successfully!")
     }
 
-    static func findMovie(byTitle title: String, in movies: [(title: String, year: Int, rating: Double, genre: String)]) -> (title: String, year: Int, rating: Double, genre: String)?
+    static func findMovie(byTitle title: String, in movies: [Movie]) -> Movie?
     {
         for movie in movies {
             if movie.title.lowercased() == title.lowercased() {
@@ -121,9 +123,9 @@ struct Movies {
         return nil
     }
 
-    static func filterMovies(_ movies: [(title: String, year: Int, rating: Double, genre: String)], matching criteria: ((title: String, year: Int, rating: Double, genre: String)) -> Bool) -> [(title: String, year: Int, rating: Double, genre: String)]
+    static func filterMovies(_ movies: [Movie], matching criteria: (Movie) -> Bool) -> [Movie]
     {
-        var filteredMovies: [(title: String, year: Int, rating: Double, genre: String)] = []
+        var filteredMovies: [Movie] = []
         for movie in movies {
             if criteria(movie) {
                 filteredMovies.append(movie)
@@ -132,7 +134,7 @@ struct Movies {
         return filteredMovies
     }
 
-    static func getUniqueGenres(from movies: [(title: String, year: Int, rating: Double, genre: String)]) -> Set<String>
+    static func getUniqueGenres(from movies: [Movie]) -> Set<String>
     {
         var genres: Set<String> = Set()
         for movie in movies {
@@ -141,7 +143,7 @@ struct Movies {
         return genres
     }
 
-    static func averageRating(of movies: [(title: String, year: Int, rating: Double, genre: String)]) -> Double
+    static func averageRating(of movies: [Movie]) -> Double
     {
         guard !movies.isEmpty else {
             return 0.0
@@ -153,12 +155,12 @@ struct Movies {
         return totalRating / Double(movies.count)
     }
 
-    static func bestMovie(in movies: [(title: String, year: Int, rating: Double, genre: String)]) -> (title: String, year: Int, rating: Double, genre: String)?
+    static func bestMovie(in movies: [Movie]) -> Movie?
     {
         guard !movies.isEmpty else {
             return nil
         }
-        var best: (title: String, year: Int, rating: Double, genre: String) = movies[0]
+        var best: Movie = movies[0]
         for movie in movies {
             if movie.rating > best.rating {
                 best = movie
@@ -167,9 +169,9 @@ struct Movies {
         return best
     }
 
-    static func moviesByDecade(_ movies: [(title: String, year: Int, rating: Double, genre: String)]) -> [String: [(title: String, year: Int, rating: Double, genre: String)]]
+    static func moviesByDecade(_ movies: [Movie]) -> [String: [Movie]]
     {
-        var decadeDict: [String: [(title: String, year: Int, rating: Double, genre: String)]] = [:]
+        var decadeDict: [String: [Movie]] = [:]
         for movie in movies {
             let decade = "\(movie.year / 10 * 10)s"
             if decadeDict[decade] == nil {
