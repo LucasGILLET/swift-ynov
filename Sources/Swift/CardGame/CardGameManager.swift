@@ -200,6 +200,17 @@ final class CardGameManager {
         // TODO: Créer et lancer une partie
         let game = Game(player1: player1, player2: player2)
         game.play()
+
+        print("=== EXTENSION TEST ===")
+        let testCards = [
+            Card(rank: .five, suit: .hearts),
+            Card(rank: .king, suit: .spades),
+            Card(rank: .three, suit: .diamonds)
+        ]
+        print("Test cards: \(testCards.description)")
+        if let highest = testCards.highestCard() {
+            print("Highest card: \(highest.description)")
+        }
     }
 }
 
