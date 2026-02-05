@@ -1,6 +1,7 @@
 import Foundation
 
 @main
+@MainActor
 struct Swift {
     static func main() {
         // ----- DAY 1 -----
@@ -14,8 +15,10 @@ struct Swift {
         // Movies.runApp()
 
         // ----- DAY 2 -----
-        ExercicesDay2().testRectangle()
-        ExercicesDay2().displayShapes()
-        ExercicesDay2().testExo3()
+        // ExercicesDay2().testRectangle()
+        // ExercicesDay2().displayShapes()
+        // ExercicesDay2().testExo3()
+
+        CardGamePackage.main()
     }
 }
