@@ -3,7 +3,7 @@ import Foundation
 @main
 @MainActor
 struct Swift {
-    static func main() {
+    static func main() async {
         // ----- DAY 1 -----
         // print("Lets start with the profile !")
         // Exercices.profile()
@@ -19,6 +19,14 @@ struct Swift {
         // ExercicesDay2().displayShapes()
         // ExercicesDay2().testExo3()
 
-        CardGamePackage.main()
+        // CardGamePackage.main()
+
+
+        // ----- DAY 3 -----
+        // ExercicesDay3().testExo1() // j'ai fini l'exo juste avant que tu dises qu'on avait pas besoin de le faire
+        // await ExercicesDay3().testExo4()
+
+        await WeatherAPIPackage.main()
+
     }
 }
